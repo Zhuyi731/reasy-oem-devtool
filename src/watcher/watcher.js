@@ -66,8 +66,13 @@ class Watcher {
 
             this.chokidarWatcher = chokidar.watch(modules)
             this.chokidarWatcher.on("change", filePath => {
-                // this._clearCache(filePath);
-                compiler.compile(this.rootPath);
+                console.log("[Reasy-oem-devtool]: 检测到规则变化，重新编译");
+                try {
+                    this._clearCache(path.join(this.rootPath, "oem.config.js"));
+                    compiler.compile(this.rootPath);
+                } catch (e) {
+                    console.log(e);
+                }
             });
         }
     }
@@ -124,12 +129,12 @@ class Watcher {
 
         if (!!mod && require.cache[mod]) {
             require.cache[mod].children.forEach(child => {
-                clearCache(child.filename);
+                this._clearCache(child.filename);
             });
             delete require.cache[mod];
         }
     }
 }
 let watcher = new Watcher();
-// watcher.watch(path.join(__dirname, "../../AC6_/AC6_"), 8080);
+// watcher.watch(path.join(__dirname, "../../test/AC6_"), 8080);
 module.exports = watcher;

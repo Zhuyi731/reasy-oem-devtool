@@ -9,7 +9,9 @@ program.command("watch")
     .description("Watch the files blow your current working directory while doing oem test")
     .option("-P,--port,http server port you want to listening on")
     .action(args => {
-        watcher.watche(path.resolve(process.cwd(), ~~args.port));
+        console.log("[Reasy-oem-devtool]: OEM本地开发工具开启");
+        console.log(process.cwd())
+        watcher.watch(process.cwd(), args.port);
     });
 
 program.parse(process.argv);
